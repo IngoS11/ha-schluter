@@ -1,0 +1,23 @@
+{
+    "config": {
+      "step": {
+        "user": {
+          "title": "Schluter-DITRA-HEAT-E-Wifi",
+          "description": "Enter your credentials",
+          "data": {
+            "username": "[%key:common::config_flow::data::username%]",
+            "password": "[%key:common::config_flow::data::password%]"
+          }
+        }
+      },
+      "error": {
+        "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+        "invalid_user_pass": "[%key:common::config_flow::error::invalid_user_pass%]",
+        "unknown": "[%key:common::config_flow::error::unknown%]"
+      },
+      "abort": {
+        "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]"
+      }
+    }
+  }
+  
