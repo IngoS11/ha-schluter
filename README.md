@@ -1,19 +1,19 @@
 # About
 This is a work in progress alternative to the default [Schluter integration in Homeassistant](https://www.home-assistant.io/integrations/schluter/) and
-is currently in an alpha stage. In comparison to the standard integration this one is built making use the [Integration Setup](https://my.home-assistant.io/redirect/integrations) and is written using the async Pyton libraries.
+is currently in alpha stage. In comparison to the standard integration is using the [Integration Setup](https://my.home-assistant.io/redirect/integrations) and is written using the async Pyton libraries.
 
 ## Getting Started
 
 ### Prerequisites
 
 - Use Home Assistant v2022.6.0 or above.
-- You need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. The configuration of you Thermostat will include creting a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password will need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
-- This integration will install into the `customs_folder`, but I have not yet tested the behaviour schould you have an existing configuration for the standard Schluter integration available in Homeassistant.
+- You need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. During the configuration of your Thermostat you will create a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
+- The integration will install into the `customs_folder`, but no tests have been done that on the behaviour schould you have an existing configuration for the standard Schluter integration available in Homeassistant.
 
 
 ### HACS Installation
 
-You can find it in the default HACS repo. Just search Schluter.  
+You can find it in the default HACS repo. Just search for Schluter.  
 
 ### Manual Installation
 
