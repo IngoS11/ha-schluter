@@ -8,10 +8,12 @@ is currently in an alpha stage. In comparison to the standard integration this o
 
 - Use Home Assistant v2022.6.0 or above.
 - You need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. The configuration of you Thermostat will include creting a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password will need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
+- This integration will install into the `customs_folder`, but I have not yet tested the behaviour schould you have an existing configuration for the standard Schluter integration available in Homeassistant.
+
 
 ### HACS Installation
 
-The installation through HACS is not tested yet. Your mileage may vary.
+You can find it in the default HACS repo. Just search Schluter.  
 
 ### Manual Installation
 
