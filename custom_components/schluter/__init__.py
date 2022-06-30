@@ -13,7 +13,7 @@ from aioschluter import (
 )
 
 import async_timeout
-from aiohttp import ClientSession
+from dataclasses import dataclass
 from aiohttp.client_exceptions import ClientConnectorError
 
 from homeassistant.config_entries import ConfigEntry
@@ -40,15 +40,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     _LOGGER.debug("Using username %s to connect to Schluter Api", username)
 
     websession = async_get_clientsession(hass)
+    api = SchluterApi(websession)
 
-    coordinator = SchluterDataUpdateCoordinator(hass, websession, username, password)
+    coordinator = SchluterDataUpdateCoordinator(hass, api, username, password)
     await coordinator.async_config_entry_first_refresh()
 
-    entry.async_on_unload(entry.add_update_listener(update_listener))
+    schluter_data = SchluterData(api, coordinator)
 
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
-
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = schluter_data
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+    entry.async_on_unload(entry.add_update_listener(update_listener))
 
     return True
 
@@ -72,14 +73,14 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     def __init__(
         self,
         hass: HomeAssistant,
-        session: ClientSession,
+        api: SchluterApi,
         username: str,
         password: str,
     ) -> None:
         """Initialize."""
         self._username = username
         self._password = password
-        self._schluter = SchluterApi(session)
+        self._api = api
         self._sessionid = None
 
         update_interval = timedelta(minutes=1)
@@ -93,12 +94,10 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         try:
             async with async_timeout.timeout(10):
                 if self._sessionid is None:
-                    self._sessionid = await self._schluter.async_get_sessionid(
+                    self._sessionid = await self._api.async_get_sessionid(
                         self._username, self._password
                     )
-                return await self._schluter.async_get_current_thermostats(
-                    self._sessionid
-                )
+                return await self._api.async_get_current_thermostats(self._sessionid)
         except (
             InvalidUserPasswordError,
             InvalidSessionIdError,
@@ -106,3 +105,11 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             raise ConfigEntryAuthFailed from err
         except (ApiError, ClientConnectorError) as err:
             raise UpdateFailed(err) from err
+
+
+@dataclass
+class SchluterData:
+    """Data for the schluter integration."""
+
+    api: SchluterApi
+    coordinator: SchluterDataUpdateCoordinator
