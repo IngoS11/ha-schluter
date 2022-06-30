@@ -1,6 +1,6 @@
 # About
 This is a work in progress alternative to the default [Schluter integration in Homeassistant](https://www.home-assistant.io/integrations/schluter/) and
-is currently in an alpha stage. In comparison to the standard integration this one is built making use the [Integration Setup]((https://my.home-assistant.io/redirect/integrations) and is written using async library.
+is currently in an alpha stage. In comparison to the standard integration this one is built making use the [Integration Setup](https://my.home-assistant.io/redirect/integrations) and is written using async library.
 
 ## Getting Started
 
