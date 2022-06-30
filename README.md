@@ -1,12 +1,11 @@
 # About
 This is a work in progress alternative to the default [Schluter integration in Homeassistant](https://www.home-assistant.io/integrations/schluter/) and
-is currently in an alpha stage. In comparison to the standard integration this one is built making use the the integration  asyncronous communication with the Schluter API
+is currently in an alpha stage. In comparison to the standard integration this one is built making use the [Integration Setup]((https://my.home-assistant.io/redirect/integrations) and is written using async library.
 
 ## Getting Started
 
 ### Prerequisites
-Obviously you need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. The configuration
-of you Thermostat will include creting a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password will need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
+You need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. The configuration of you Thermostat will include creting a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password will need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
 
 
 ### HACS Installation
