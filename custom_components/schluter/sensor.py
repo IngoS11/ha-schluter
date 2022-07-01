@@ -8,6 +8,8 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
     TEMP_CELSIUS,
+    TEMP_FAHRENHEIT,
+    TEMP_KELVIN,
 )
 
 from homeassistant.helpers.update_coordinator import (
@@ -22,6 +24,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     """Add sensors for passed config_entry in HA."""
     data: SchluterData = hass.data[DOMAIN][config_entry.entry_id]
 
+    temperature_unit = hass.config.units.temperature_unit
     async_add_entities(
         SchluterTemperatureSensor(data.coordinator, thermostat_id)
         for thermostat_id in data.coordinator.data
@@ -42,7 +45,7 @@ class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
     ) -> None:
         """Initialize the sensor."""
         super().__init__(coordinator)
-        self._attr_name = coordinator.data[thermostat_id].name + " Temperature"
+        self._attr_name = coordinator.data[thermostat_id].name + " Current Temperature"
         self._thermostat_id = thermostat_id
         self._attr_unique_id = thermostat_id + "_temperature"
 
@@ -63,4 +66,9 @@ class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
     @property
     def state(self):
         """Return the state of the sensor."""
-        return self.coordinator.data[self._thermostat_id].temperature
+        temperature = self.coordinator.data[self._thermostat_id].temperature
+        if self.unit_of_measurement == TEMP_CELSIUS:
+            return temperature
+        elif self.unit_of_measurement == TEMP_FAHRENHEIT:
+            return (temperature * 1.8) + 32
+        return round(temperature + 273.15, 2)

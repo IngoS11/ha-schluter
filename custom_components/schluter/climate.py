@@ -5,15 +5,12 @@ import logging
 from aiohttp.client_exceptions import ClientConnectorError
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.components.climate import ClimateEntity
 
-from homeassistant.components.climate import (
-    TEMP_CELSIUS,
-    ClimateEntity,
-)
+from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
 
 from homeassistant.components.climate.const import (
     ClimateEntityFeature,
@@ -48,6 +45,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up device tracker for DITRA-HEAT-E-WIFI component."""
     data: SchluterData = hass.data[DOMAIN][config_entry.entry_id]
+    temperature_unit = hass.config.units.temperature_unit
     async_add_entities(
         SchluterThermostat(data.api, data.coordinator, thermostat_id)
         for thermostat_id in data.coordinator.data
