@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import timedelta
 import logging
 from typing import Any
+from dataclasses import dataclass
 
 from aioschluter import (
     SchluterApi,
@@ -13,7 +14,6 @@ from aioschluter import (
 )
 
 import async_timeout
-from dataclasses import dataclass
 from aiohttp.client_exceptions import ClientConnectorError
 
 from homeassistant.config_entries import ConfigEntry
@@ -35,7 +35,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     username: str = entry.data[CONF_USERNAME]
     password: str = entry.data[CONF_PASSWORD]
-    # assert entry.unique_id is not None
+    assert entry.unique_id is not None
 
     _LOGGER.debug("Using username %s to connect to Schluter Api", username)
 
@@ -57,6 +57,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+        _LOGGER.debug("Unloading configuration entry %s", entry.entry_id)
         hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
@@ -64,6 +65,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Update listener."""
+    _LOGGER.debug("Update Listener for entry %s", entry.entry_id)
     await hass.config_entries.async_reload(entry.entry_id)
 
 
@@ -98,10 +100,18 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                         self._username, self._password
                     )
                 return await self._api.async_get_current_thermostats(self._sessionid)
-        except (
-            InvalidUserPasswordError,
-            InvalidSessionIdError,
-        ) as err:
+        except InvalidSessionIdError as err:
+            # if we get a 401 UNAUTHENTICATED the aio library raises the INvalidSessionIdError
+            # and we need to get a new sessionid
+            try:
+                self._sessionid = await self._api.async_get_sessionid(
+                    self._username, self._password
+                )
+            except InvalidUserPasswordError as err:
+                raise ConfigEntryAuthFailed from err
+            except (ApiError, ClientConnectorError) as err:
+                raise UpdateFailed(err) from err
+        except InvalidUserPasswordError as err:
             raise ConfigEntryAuthFailed from err
         except (ApiError, ClientConnectorError) as err:
             raise UpdateFailed(err) from err

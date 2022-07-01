@@ -1,19 +1,14 @@
 """Support for Schluter DITRA-HEAT-E-WIFI Thermostats."""
 from __future__ import annotations
-from datetime import timedelta
 import logging
 
 from aiohttp.client_exceptions import ClientConnectorError
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.icon import icon_for_battery_level
-from homeassistant.components.climate import ClimateEntity
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from homeassistant.components.climate import (
     TEMP_CELSIUS,
@@ -29,11 +24,7 @@ from homeassistant.components.climate.const import (
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     CoordinatorEntity,
-)
-
-from homeassistant.components.climate.const import (
-    ClimateEntityFeature,
-    HVACMode,
+    UpdateFailed,
 )
 
 from aioschluter import (
