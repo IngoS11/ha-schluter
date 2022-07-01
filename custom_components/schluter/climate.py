@@ -78,6 +78,18 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
         ClimateEntity.__init__(self)
 
     @property
+    def device_info(self):
+        """Information about this entity/device."""
+        return {
+            "identifiers": {(DOMAIN, self._attr_unique_id)},
+            # If desired, the name for the device could be different to the entity
+            "name": self._name,
+            "sw_version": self.coordinator.data[self._attr_unique_id].sw_version,
+            "model": "DITRA-HEAT-E-Wifi",
+            "manufacturer": "Schluter",
+        }
+
+    @property
     def unique_id(self):
         """Return unique ID for this device."""
         return self._serial_number
@@ -121,6 +133,13 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Mode is always heating, so do nothing."""
+
+    # This property is important to let HA know if this entity is online or not.
+    # If an entity is offline (return False), the UI will refelect this.
+    @property
+    def available(self) -> bool:
+        """Return True if roller and hub is available."""
+        return self.coordinator.data[self._attr_unique_id].is_online
 
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
