@@ -1,24 +1,16 @@
 """Support for Schluter DITRA-HEAT-E-WIFI Thermostats."""
 from __future__ import annotations
-from datetime import timedelta
 import logging
 
 from aiohttp.client_exceptions import ClientConnectorError
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import ATTR_TEMPERATURE
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.icon import icon_for_battery_level
 from homeassistant.components.climate import ClimateEntity
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from homeassistant.components.climate import (
-    TEMP_CELSIUS,
-    ClimateEntity,
-)
+from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
 
 from homeassistant.components.climate.const import (
     ClimateEntityFeature,
@@ -29,11 +21,7 @@ from homeassistant.components.climate.const import (
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     CoordinatorEntity,
-)
-
-from homeassistant.components.climate.const import (
-    ClimateEntityFeature,
-    HVACMode,
+    UpdateFailed,
 )
 
 from aioschluter import (
@@ -57,6 +45,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up device tracker for DITRA-HEAT-E-WIFI component."""
     data: SchluterData = hass.data[DOMAIN][config_entry.entry_id]
+    temperature_unit = hass.config.units.temperature_unit
     async_add_entities(
         SchluterThermostat(data.api, data.coordinator, thermostat_id)
         for thermostat_id in data.coordinator.data
@@ -85,6 +74,18 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
         self._attr_unique_id = thermostat_id
         self._serial_number = coordinator.data[thermostat_id].serial_number
         ClimateEntity.__init__(self)
+
+    @property
+    def device_info(self):
+        """Information about this entity/device."""
+        return {
+            "identifiers": {(DOMAIN, self._attr_unique_id)},
+            # If desired, the name for the device could be different to the entity
+            "name": self._name,
+            "sw_version": self.coordinator.data[self._attr_unique_id].sw_version,
+            "model": "DITRA-HEAT-E-Wifi",
+            "manufacturer": "Schluter",
+        }
 
     @property
     def unique_id(self):
@@ -130,6 +131,13 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Mode is always heating, so do nothing."""
+
+    # This property is important to let HA know if this entity is online or not.
+    # If an entity is offline (return False), the UI will refelect this.
+    @property
+    def available(self) -> bool:
+        """Return True if roller and hub is available."""
+        return self.coordinator.data[self._attr_unique_id].is_online
 
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
