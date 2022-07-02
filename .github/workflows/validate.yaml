@@ -28,8 +28,6 @@ jobs:
         run: isort --line-width 88 --trailing-comma -m 3 --profile black --check-only .
       - name: black
         run: black --check .
-      - name: pylint
-        run: pylint --min-similarity-lines=6 custom_components/schluter
       - name: flake8
         run: flake8 --max-line-length 88 .
       - name: pydocstyle
