@@ -1,35 +1,31 @@
 """Support for Schluter DITRA-HEAT-E-WIFI Thermostats."""
 from __future__ import annotations
+
 import logging
 
 from aiohttp.client_exceptions import ClientConnectorError
-
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from aioschluter import (
+    ApiError,
+    InvalidSessionIdError,
+    InvalidUserPasswordError,
+    SchluterApi,
+    Thermostat,
+)
 from homeassistant.components.climate import ClimateEntity
-
-from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
-
 from homeassistant.components.climate.const import (
     ClimateEntityFeature,
     HVACAction,
     HVACMode,
 )
-
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
+from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import (
-    DataUpdateCoordinator,
     CoordinatorEntity,
+    DataUpdateCoordinator,
     UpdateFailed,
-)
-
-from aioschluter import (
-    SchluterApi,
-    Thermostat,
-    ApiError,
-    InvalidSessionIdError,
-    InvalidUserPasswordError,
 )
 
 from . import SchluterData

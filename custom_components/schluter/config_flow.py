@@ -4,15 +4,13 @@ from __future__ import annotations
 import asyncio
 from typing import Any
 
+import voluptuous as vol
 from aiohttp import ClientError
 from aiohttp.client_exceptions import ClientConnectorError
+from aioschluter import ApiError, InvalidUserPasswordError, SchluterApi
 from async_timeout import timeout
-import voluptuous as vol
-
-from aioschluter import SchluterApi, ApiError, InvalidUserPasswordError
-
 from homeassistant import config_entries
-from homeassistant.const import CONF_USERNAME, CONF_PASSWORD
+from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 

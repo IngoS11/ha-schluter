@@ -1,22 +1,20 @@
 """ Break out the temperature of the thermostat into a separate sensor entity."""
 
+from aioschluter import Thermostat
 from homeassistant.components.sensor import (
+    TEMP_CELSIUS,
+    TEMP_FAHRENHEIT,
     SensorDeviceClass,
     SensorEntity,
     SensorStateClass,
-    TEMP_CELSIUS,
-    TEMP_FAHRENHEIT,
 )
-
 from homeassistant.helpers.update_coordinator import (
-    DataUpdateCoordinator,
     CoordinatorEntity,
+    DataUpdateCoordinator,
 )
 
-from aioschluter import Thermostat
-
-from .const import DOMAIN
 from . import SchluterData
+from .const import DOMAIN
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):

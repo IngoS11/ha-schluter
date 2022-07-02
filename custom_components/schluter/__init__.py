@@ -1,21 +1,19 @@
 """The schluter integration."""
 from __future__ import annotations
 
-from datetime import timedelta
 import logging
-from typing import Any
 from dataclasses import dataclass
-
-from aioschluter import (
-    SchluterApi,
-    ApiError,
-    InvalidUserPasswordError,
-    InvalidSessionIdError,
-)
+from datetime import timedelta
+from typing import Any
 
 import async_timeout
 from aiohttp.client_exceptions import ClientConnectorError
-
+from aioschluter import (
+    ApiError,
+    InvalidSessionIdError,
+    InvalidUserPasswordError,
+    SchluterApi,
+)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
