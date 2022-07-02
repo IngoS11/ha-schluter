@@ -23,7 +23,7 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Change directory
-        run: cd custom_components/garbage_collection
+        run: cd custom_components/schluter
       - name: isort
         run: isort --line-width 88 --trailing-comma -m 3 --profile black --check-only .
       - name: black
