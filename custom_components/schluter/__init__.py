@@ -97,9 +97,9 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                         self._username, self._password
                     )
                 return await self._api.async_get_current_thermostats(self._sessionid)
-        except InvalidSessionIdError as err:
-            # if we get a 401 UNAUTHENTICATED the aio library raises the INvalidSessionIdError
-            # and we need to get a new sessionid
+        except InvalidSessionIdError:
+            # if we get a 401 UNAUTHENTICATED the aio library raises the
+            # InvalidSessionIdError and we need to get a new sessionid
             try:
                 self._sessionid = await self._api.async_get_sessionid(
                     self._username, self._password
