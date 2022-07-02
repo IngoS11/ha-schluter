@@ -1,7 +1,6 @@
 """ Break out the temperature of the thermostat into a separate sensor entity."""
 
 from aioschluter import Thermostat
-
 from homeassistant.components.sensor import (
     TEMP_CELSIUS,
     SensorDeviceClass,
