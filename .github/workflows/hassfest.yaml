@@ -3,7 +3,7 @@ name: Validate with hassfest
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "25 0 * * *"
 
 jobs:
   validate:
