@@ -6,7 +6,7 @@
   "documentation": "https://github.com/Ingos11/ha-schluter",
   "issue_tracker": "https://github.com/Ingos11/ha-schluter/issues",
   "requirements": [
-    "aioschluter==0.1.3"
+    "aioschluter==0.1.5"
   ],
   "ssdp": [],
   "zeroconf": [],

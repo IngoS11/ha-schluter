@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import datetime, timedelta
 from typing import Any
 
 import async_timeout
@@ -91,21 +91,25 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         try:
             async with async_timeout.timeout(10):
                 if self._sessionid is None:
+                    _LOGGER.info("No Schluter Sessionid found, authenticating")
+                    self._sessionid = await self._api.async_get_sessionid(
+                        self._username, self._password
+                    )
+                expiration_timestamp = self._api.sessionid_timestamp + timedelta(
+                    days=+1
+                )
+                _LOGGER.debug(
+                    "Sessionid expiration timestamp is: %s",
+                    expiration_timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+                )
+                if expiration_timestamp >= datetime.now():
+                    _LOGGER.info("Schluter Sessionid is expired, authenticating again")
                     self._sessionid = await self._api.async_get_sessionid(
                         self._username, self._password
                     )
                 return await self._api.async_get_current_thermostats(self._sessionid)
-        except InvalidSessionIdError:
-            # if we get a 401 UNAUTHENTICATED the aio library raises the
-            # InvalidSessionIdError and we need to get a new sessionid
-            try:
-                self._sessionid = await self._api.async_get_sessionid(
-                    self._username, self._password
-                )
-            except InvalidUserPasswordError as err:
-                raise ConfigEntryAuthFailed from err
-            except (ApiError, ClientConnectorError) as err:
-                raise UpdateFailed(err) from err
+        except InvalidSessionIdError as err:
+            raise ConfigEntryAuthFailed from err
         except InvalidUserPasswordError as err:
             raise ConfigEntryAuthFailed from err
         except (ApiError, ClientConnectorError) as err:

@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: 3.9
       - name: Install dependencies
-        run: pip install 'isort==5.*' black flake8 mypy pydocstyle types-python-dateutil
+        run: pip install 'isort==5.*' black flake8 mypy pydocstyle pylint types-python-dateutil
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Change directory
@@ -28,6 +28,8 @@ jobs:
         run: isort --line-width 88 --trailing-comma -m 3 --profile black --check-only .
       - name: black
         run: black --check .
+      - name: pylint
+        run: pylint --min-similarity-lines=6 custom_components/schluter
       - name: flake8
         run: flake8 --max-line-length 88 .
       - name: pydocstyle
@@ -41,4 +43,4 @@ jobs:
       - name: Bandit Check (Python security linter)
         uses: jpetrucciani/bandit-check@master
         with:
-          path: '/custom_components/schluter/'
+          path: "/custom_components/schluter/"

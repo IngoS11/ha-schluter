@@ -28,7 +28,7 @@
     {
       "label": "Flake8",
       "type": "shell",
-      "command": "pre-commit run flake8 --all-files",
+      "command": "pre-commit run flake8 custom_components/schluter",
       "group": {
         "kind": "test"
       },
@@ -41,7 +41,7 @@
     {
       "label": "Pylint",
       "type": "shell",
-      "command": "pylint custom_components/schluter",
+      "command": "pylint --min-similarity-lines=6 custom_components/schluter",
       "dependsOn": [
         "Install all Requirements"
       ],
@@ -58,7 +58,18 @@
       "label": "Install all Requirements",
       "type": "shell",
       "command": "pip3 install --use-deprecated=legacy-resolver -r requirements.txt -r requirements_test.txt",
-      "group": "build",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Isort",
+      "type": "shell",
+      "command": "isort --line-width 88 --trailing-comma -m 3 --profile black .",
+      "group": "test",
       "presentation": {
         "reveal": "always",
         "panel": "new"
