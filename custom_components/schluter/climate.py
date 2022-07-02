@@ -45,7 +45,6 @@ async def async_setup_entry(
 ) -> None:
     """Set up device tracker for DITRA-HEAT-E-WIFI component."""
     data: SchluterData = hass.data[DOMAIN][config_entry.entry_id]
-    temperature_unit = hass.config.units.temperature_unit
     async_add_entities(
         SchluterThermostat(data.api, data.coordinator, thermostat_id)
         for thermostat_id in data.coordinator.data

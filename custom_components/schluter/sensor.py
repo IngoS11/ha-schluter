@@ -1,15 +1,11 @@
 """ Break out the temperature of the thermostat into a separate sensor entity."""
 
-from .const import DOMAIN
-from . import SchluterData
-
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
     SensorStateClass,
     TEMP_CELSIUS,
     TEMP_FAHRENHEIT,
-    TEMP_KELVIN,
 )
 
 from homeassistant.helpers.update_coordinator import (
@@ -19,12 +15,14 @@ from homeassistant.helpers.update_coordinator import (
 
 from aioschluter import Thermostat
 
+from .const import DOMAIN
+from . import SchluterData
+
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Add sensors for passed config_entry in HA."""
     data: SchluterData = hass.data[DOMAIN][config_entry.entry_id]
 
-    temperature_unit = hass.config.units.temperature_unit
     async_add_entities(
         SchluterTemperatureSensor(data.coordinator, thermostat_id)
         for thermostat_id in data.coordinator.data
@@ -69,6 +67,6 @@ class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
         temperature = self.coordinator.data[self._thermostat_id].temperature
         if self.unit_of_measurement == TEMP_CELSIUS:
             return temperature
-        elif self.unit_of_measurement == TEMP_FAHRENHEIT:
+        if self.unit_of_measurement == TEMP_FAHRENHEIT:
             return (temperature * 1.8) + 32
         return round(temperature + 273.15, 2)
