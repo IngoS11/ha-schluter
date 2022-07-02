@@ -30,7 +30,6 @@ PLATFORMS = [Platform.CLIMATE, Platform.SENSOR]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up schluter from a config entry."""
-
     username: str = entry.data[CONF_USERNAME]
     password: str = entry.data[CONF_PASSWORD]
 
@@ -67,7 +66,7 @@ async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
 
 
 class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
-    """Class to manage fetching Schluter temerature data from API"""
+    """Class to manage fetching Schluter temerature data from API."""
 
     def __init__(
         self,
@@ -88,8 +87,7 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=update_interval)
 
     async def _async_update_data(self) -> dict[str, Any]:
-        """Update data via schluter library"""
-
+        """Update data via schluter library."""
         try:
             async with async_timeout.timeout(10):
                 if self._sessionid is None:

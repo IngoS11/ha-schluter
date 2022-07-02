@@ -48,7 +48,7 @@ async def async_setup_entry(
 
 
 class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity):
-    """Define an Schluter Thermostat Entity"""
+    """Define an Schluter Thermostat Entity."""
 
     _attr_hvac_mode = HVACMode.HEAT
     _attr_hvac_modes = [HVACMode.HEAT]
@@ -62,7 +62,7 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
         coordinator: DataUpdateCoordinator[dict[str, dict[str, Thermostat]]],
         thermostat_id: str,
     ) -> None:
-        """Initialize Schluter Thermostat"""
+        """Initialize Schluter Thermostat."""
         super().__init__(coordinator)
         self._api = api
         self._name = coordinator.data[thermostat_id].name

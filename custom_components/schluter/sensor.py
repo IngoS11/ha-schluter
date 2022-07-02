@@ -1,4 +1,4 @@
-""" Break out the temperature of the thermostat into a separate sensor entity."""
+"""Break out the temperature of the thermostat into a separate sensor entity."""
 
 from aioschluter import Thermostat
 from homeassistant.components.sensor import (
@@ -53,9 +53,7 @@ class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
 
     @property
     def device_info(self):
-        """Return information to link this entity with the correct
-        thermostat in the devices registry.
-        """
+        """Return information to link this entity."""
         return {
             "identifiers": {(DOMAIN, self._thermostat_id)},
         }

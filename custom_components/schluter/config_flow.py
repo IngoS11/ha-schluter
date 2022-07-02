@@ -32,7 +32,7 @@ class SchluterConfigFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Handle the initial setup of username and password"""
+        """Handle the initial setup of username and password."""
         # Only allow a single instance of the integration.
         if self._async_current_entries():
             return self.async_abort(reason="single_instance_allowed")

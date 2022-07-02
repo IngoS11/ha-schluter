@@ -33,7 +33,7 @@ jobs:
       - name: pydocstyle
         run: pydocstyle .
       - name: mypy
-        run: mypy --ignore-missing-imports --follow-imports=silent --warn-unused-ignores custom_components/garbage_collection
+        run: mypy --ignore-missing-imports --follow-imports=silent --warn-unused-ignores custom_components/schluter
   bandit:
     runs-on: "ubuntu-latest"
     steps:

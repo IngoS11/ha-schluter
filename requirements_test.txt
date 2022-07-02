@@ -5,3 +5,4 @@ isort==5.10.1
 mypy==0.942
 pre-commit==2.18.1
 poetry==1.1.13
+pydocstyle==6.1.1
