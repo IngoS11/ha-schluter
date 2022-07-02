@@ -1,9 +1,9 @@
 """ Break out the temperature of the thermostat into a separate sensor entity."""
 
 from aioschluter import Thermostat
+
 from homeassistant.components.sensor import (
     TEMP_CELSIUS,
-    TEMP_FAHRENHEIT,
     SensorDeviceClass,
     SensorEntity,
     SensorStateClass,
@@ -43,7 +43,9 @@ class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
         super().__init__(coordinator)
         self._attr_name = coordinator.data[thermostat_id].name + " Current Temperature"
         self._thermostat_id = thermostat_id
-        self._attr_unique_id = thermostat_id + "_temperature"
+        self._attr_unique_id = (
+            f"{coordinator.data[thermostat_id].name}-{self._attr_device_class}"
+        )
 
     @property
     def available(self) -> bool:
@@ -60,11 +62,6 @@ class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
         }
 
     @property
-    def state(self):
+    def native_value(self) -> float:
         """Return the state of the sensor."""
-        temperature = self.coordinator.data[self._thermostat_id].temperature
-        if self.unit_of_measurement == TEMP_CELSIUS:
-            return temperature
-        if self.unit_of_measurement == TEMP_FAHRENHEIT:
-            return (temperature * 1.8) + 32
-        return round(temperature + 273.15, 2)
+        return self.coordinator.data[self._thermostat_id].temperature
