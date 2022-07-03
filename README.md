@@ -1,4 +1,4 @@
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration) [![Garbage-Collection](https://img.shields.io/github/v/release/IngoS11/ha-schluter.svg?1)](https://github.com/IngoS11/ha-schluter) ![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
+(https://img.shields.io/github/v/release/IngoS11/ha-schluter.svg?1)](https://github.com/IngoS11/ha-schluter) ![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
 
 # About
 This is a work in progress alternative to the default [Schluter integration in Homeassistant](https://www.home-assistant.io/integrations/schluter/) and
@@ -15,7 +15,7 @@ is currently in alpha stage. In comparison to the standard integration is using 
 
 ### HACS Installation
 
-You can find it in the default HACS repo. Just search for Schluter.  
+To use the integration with HACS you have to add this repository. Under HACS select Integrations in the overfolw menu (three dots in the upper right corner) select `Custom repositories` paste the URL into the `repository` field and select Integration as the Category. The integration into the default repositories is currently in the works.
 
 ### Manual Installation
 
