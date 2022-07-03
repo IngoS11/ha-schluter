@@ -27,7 +27,10 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 )
 
 
-class SchluterConfigFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
+@config_entries.HANDLERS.register(DOMAIN)
+class SchluterConfigFlowHandler(
+    config_entries.ConfigFlow,
+):
     """Handle a config flow for schluter."""
 
     VERSION = 1
