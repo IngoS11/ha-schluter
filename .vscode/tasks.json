@@ -41,7 +41,7 @@
     {
       "label": "Pylint",
       "type": "shell",
-      "command": "pylint --min-similarity-lines=6 custom_components/schluter",
+      "command": "pylint --min-similarity-lines=7 custom_components/schluter",
       "dependsOn": [
         "Install all Requirements"
       ],
@@ -105,7 +105,7 @@
     {
       "label": "Flake8",
       "type": "shell",
-      "command": "pre-commit run flake8 --all-files",
+      "command": "flake8 --max-line-length 88 .",
       "group": {
         "kind": "test"
       },

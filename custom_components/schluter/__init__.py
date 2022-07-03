@@ -80,6 +80,7 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self._password = password
         self._api = api
         self._sessionid = None
+        self._counter = 0
 
         update_interval = timedelta(minutes=1)
         _LOGGER.debug("Data will be update every %s", update_interval)
@@ -89,6 +90,7 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     async def _async_update_data(self) -> dict[str, Any]:
         """Update data via schluter library."""
         try:
+
             async with async_timeout.timeout(10):
                 if self._sessionid is None:
                     _LOGGER.info("No Schluter Sessionid found, authenticating")
