@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Prepare release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: "Set version number"
+        run: |
+          sed -i '/  "version": /c\  "version": "${{ github.ref }}",' custom_components/schluter/manifest.json
+          sed -i 's|heads/tags/||' custom_components/schluter/manifest.json
+          sed -i 's|refs/tags/||' custom_components/schluter/manifest.json
+      # Pack the HACS dir as a zip and upload to the release
+      - name: ZIP Schluter Dir
+        run: |
+          cd /home/runner/work/ha-schluter/ha-schluter/custom_components/schluter
+          zip ha-schluter.zip -r ./
+      - name: Upload zip to release
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: /home/runner/work/ha-schluter/ha-schluter/custom_components/schluter/ha-schluter.zip
+          asset_name: ha-schluter.zip
+          tag: ${{ github.ref }}
+          overwrite: true
