@@ -1,4 +1,4 @@
-[![ha-schluter](https://img.shields.io/github/v/release/IngoS11/ha-schluter.svg?1)](https://github.com/IngoS11/ha-schluter)![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
+[![ha-schluter](https://img.shields.io/github/v/release/IngoS11/ha-schluter.svg?1)](https://github.com/IngoS11/ha-schluter) ![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
 
 # About
 This is a work in progress alternative to the default [Schluter integration in Homeassistant](https://www.home-assistant.io/integrations/schluter/) and
