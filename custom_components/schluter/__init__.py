@@ -95,6 +95,10 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     self._sessionid = await self._api.async_get_sessionid(
                         self._username, self._password
                     )
+                # add 1 day to the session timestamp to be able to check agains
+                # the current time. if the time is expired renew the sessionid.
+                # This workaround mediates the missing long lived tokens on
+                # ths Schluter API side.
                 expiration_timestamp = self._api.sessionid_timestamp + timedelta(
                     days=+1
                 )
@@ -102,7 +106,7 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     "Sessionid expiration timestamp is: %s",
                     expiration_timestamp.strftime("%Y-%m-%d %H:%M:%S"),
                 )
-                if expiration_timestamp >= datetime.now():
+                if expiration_timestamp <= datetime.now():
                     _LOGGER.info("Schluter Sessionid is expired, authenticating again")
                     self._sessionid = await self._api.async_get_sessionid(
                         self._username, self._password
