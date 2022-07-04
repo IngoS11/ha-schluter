@@ -1,16 +1,12 @@
 """Break out the temperature of the thermostat into a separate sensor entity."""
 
 from aioschluter import Thermostat
-
-from homeassistant.const import (
-    TEMP_CELSIUS,
-    POWER_WATT,
-)
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
     SensorStateClass,
 )
+from homeassistant.const import POWER_WATT, TEMP_CELSIUS
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
