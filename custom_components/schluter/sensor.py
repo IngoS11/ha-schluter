@@ -17,7 +17,7 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from . import SchluterData
-from .const import DOMAIN
+from .const import DOMAIN, ZERO_WATTS
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -106,9 +106,9 @@ class SchluterPowerSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity
         }
 
     @property
-    def native_value(self) -> float:
+    def native_value(self) -> int:
         """Return the state of the sensor."""
         if self.coordinator.data[self._thermostat_id].is_heating:
             return self.coordinator.data[self._thermostat_id].load_measured_watt
         else:
-            return 0
+            return ZERO_WATTS
