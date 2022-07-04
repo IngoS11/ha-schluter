@@ -10,7 +10,7 @@ is currently in alpha stage. In comparison to the standard integration is using 
 
 - Use Home Assistant v2022.6.0 or above.
 - You need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. During the configuration of your Thermostat you will create a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
-- The integration will install into the `customs_folder`, but no tests have been done that on the behaviour schould you have an existing configuration for the standard Schluter integration available in Homeassistant.
+- The integration will install into the `custom_components` folder.
 
 
 ### HACS Installation
