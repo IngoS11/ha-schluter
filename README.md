@@ -15,7 +15,7 @@ is currently in alpha stage. In comparison to the standard integration is using 
 
 ### HACS Installation
 
-To use the integration with HACS you have to add this repository. Under HACS select Integrations in the overfolw menu (three dots in the upper right corner) select `Custom repositories` paste the URL into the `repository` field and select Integration as the Category. The integration into the default repositories is currently in the works.
+This integration overwrites the standard Schluter integration and is therefore not accepted into the default HACS repository. To use the integration with HACS you have to add this repository. Under HACS select Integrations in the overfolw menu (three dots in the upper right corner) select `Custom repositories` paste the URL into the `repository` field and select Integration as the Category.
 
 ### Manual Installation
 
