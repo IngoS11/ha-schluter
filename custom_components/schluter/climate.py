@@ -11,6 +11,12 @@ from aioschluter import (
     SchluterApi,
     Thermostat,
 )
+from aioschluter.const import (
+    REGULATION_MODE_MANUAL,
+    REGULATION_MODE_SCHEDULE,
+    REGULATION_MODE_AWAY,
+)
+
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
     ClimateEntityFeature,
@@ -50,8 +56,7 @@ async def async_setup_entry(
 class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity):
     """Define an Schluter Thermostat Entity."""
 
-    _attr_hvac_mode = HVACMode.HEAT
-    _attr_hvac_modes = [HVACMode.HEAT]
+    _attr_hvac_modes = [HVACMode.HEAT, HVACMode.AUTO, HVACMode.OFF]
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
 
     coordinator: DataUpdateCoordinator[dict[str, dict[str, Thermostat]]]
@@ -81,6 +86,22 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
             "model": "DITRA-HEAT-E-Wifi",
             "manufacturer": "Schluter",
         }
+
+    @property
+    def hvac_mode(self):
+        if (
+            self.coordinator.data[self._attr_unique_id].regulation_mode
+            == REGULATION_MODE_SCHEDULE
+        ):
+            self._attr_hvac_mode = HVACMode.AUTO
+        elif (
+            self.coordinator.data[self._attr_unique_id].regulation_mode
+            == REGULATION_MODE_MANUAL
+        ):
+            self._attr_hvac_mode = HVACMode.HEAT
+        else:
+            self._attr_hvac_mode = HVACMode.OFF
+        return self._attr_hvac_mode
 
     @property
     def unique_id(self):
@@ -124,9 +145,6 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
         """Identify max_temp in Schluter API."""
         return self.coordinator.data[self._attr_unique_id].max_temp
 
-    async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
-        """Mode is always heating, so do nothing."""
-
     # This property is important to let HA know if this entity is online or not.
     # If an entity is offline (return False), the UI will refelect this.
     @property
@@ -134,18 +152,49 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
         """Return True if roller and hub is available."""
         return self.coordinator.data[self._attr_unique_id].is_online
 
+    async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
+        """Set the hvac mode"""
+        if hvac_mode == self._attr_hvac_mode:
+            return
+
+        serial_number = self.coordinator.data[self._attr_unique_id].serial_number
+        _LOGGER.debug(
+            "Setting HVAC mode of thermostat: %s to: %s", self._name, hvac_mode
+        )
+
+        if hvac_mode == HVACMode.AUTO:
+            regulation_mode = REGULATION_MODE_SCHEDULE
+        elif hvac_mode == HVACMode.HEAT:
+            regulation_mode = REGULATION_MODE_MANUAL
+        else:
+            regulation_mode = REGULATION_MODE_AWAY
+
+        try:
+            await self._api.async_set_regulation_mode(
+                self._api.sessionid, serial_number, regulation_mode
+            )
+            self._attr_hvac_mode = hvac_mode
+            await self.coordinator.async_request_refresh()
+        except (
+            InvalidUserPasswordError,
+            InvalidSessionIdError,
+        ) as err:
+            raise ConfigEntryAuthFailed from err
+        except (ApiError, ClientConnectorError) as err:
+            raise UpdateFailed(err) from err
+
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
         target_temp = kwargs.get(ATTR_TEMPERATURE)
         serial_number = self.coordinator.data[self._attr_unique_id].serial_number
-        session_id = self._api.sessionid
         _LOGGER.debug("Setting thermostat temperature: %s", target_temp)
 
         try:
             if target_temp is not None:
                 await self._api.async_set_temperature(
-                    session_id, serial_number, target_temp
+                    self._api.sessionid, serial_number, target_temp
                 )
+                self._attr_hvac_mode = HVACMode.HEAT
         except (
             InvalidUserPasswordError,
             InvalidSessionIdError,
