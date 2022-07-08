@@ -12,11 +12,10 @@ from aioschluter import (
     Thermostat,
 )
 from aioschluter.const import (
+    REGULATION_MODE_AWAY,
     REGULATION_MODE_MANUAL,
     REGULATION_MODE_SCHEDULE,
-    REGULATION_MODE_AWAY,
 )
-
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
     ClimateEntityFeature,
