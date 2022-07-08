@@ -172,7 +172,7 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
             await self._api.async_set_regulation_mode(
                 self._api.sessionid, serial_number, regulation_mode
             )
-            self._attr_hvac_mode = hvac_mode
+            # self._attr_hvac_mode = hvac_mode
             await self.coordinator.async_request_refresh()
         except (
             InvalidUserPasswordError,
@@ -193,7 +193,8 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
                 await self._api.async_set_temperature(
                     self._api.sessionid, serial_number, target_temp
                 )
-                self._attr_hvac_mode = HVACMode.HEAT
+                # self._attr_hvac_mode = HVACMode.HEAT
+                await self.coordinator.async_request_refresh()
         except (
             InvalidUserPasswordError,
             InvalidSessionIdError,
