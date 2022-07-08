@@ -11,7 +11,12 @@ from aioschluter import (
     SchluterApi,
     Thermostat,
 )
-from aioschluter.const import HVAC_MODE_MANUAL
+from aioschluter.const import (
+    REGULATION_MODE_MANUAL,
+    REGULATION_MODE_SCHEDULE,
+    REGULATION_MODE_AWAY,
+)
+
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
     ClimateEntityFeature,
@@ -51,7 +56,7 @@ async def async_setup_entry(
 class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity):
     """Define an Schluter Thermostat Entity."""
 
-    _attr_hvac_modes = [HVACMode.HEAT, HVACMode.AUTO]
+    _attr_hvac_modes = [HVACMode.HEAT, HVACMode.AUTO, HVACMode.OFF]
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
 
     coordinator: DataUpdateCoordinator[dict[str, dict[str, Thermostat]]]
@@ -86,11 +91,16 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
     def hvac_mode(self):
         if (
             self.coordinator.data[self._attr_unique_id].regulation_mode
-            == HVAC_MODE_MANUAL
+            == REGULATION_MODE_SCHEDULE
+        ):
+            self._attr_hvac_mode = HVACMode.AUTO
+        elif (
+            self.coordinator.data[self._attr_unique_id].regulation_mode
+            == REGULATION_MODE_MANUAL
         ):
             self._attr_hvac_mode = HVACMode.HEAT
         else:
-            self._attr_hvac_mode = HVACMode.AUTO
+            self._attr_hvac_mode = HVACMode.OFF
         return self._attr_hvac_mode
 
     @property
@@ -144,23 +154,45 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Set the hvac mode"""
+        if hvac_mode == self._attr_hvac_mode:
+            return
+
+        serial_number = self.coordinator.data[self._attr_unique_id].serial_number
+        _LOGGER.debug(
+            "Setting HVAC mode of thermostat: %s to: %s", self._name, hvac_mode
+        )
+
         if hvac_mode == HVACMode.AUTO:
-            self._attr_hvac_mode = hvac_mode
-            # set the hvac mode to schedule via the api
+            regulation_mode = REGULATION_MODE_SCHEDULE
+        elif hvac_mode == HVACMode.HEAT:
+            regulation_mode = REGULATION_MODE_MANUAL
         else:
-            _LOGGER.info("HVAC Mode heat can only be set by changing the temperature")
+            regulation_mode = REGULATION_MODE_AWAY
+
+        try:
+            await self._api.async_set_regulation_mode(
+                self._api.sessionid, serial_number, regulation_mode
+            )
+            self._attr_hvac_mode = hvac_mode
+            await self.coordinator.async_request_refresh()
+        except (
+            InvalidUserPasswordError,
+            InvalidSessionIdError,
+        ) as err:
+            raise ConfigEntryAuthFailed from err
+        except (ApiError, ClientConnectorError) as err:
+            raise UpdateFailed(err) from err
 
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
         target_temp = kwargs.get(ATTR_TEMPERATURE)
         serial_number = self.coordinator.data[self._attr_unique_id].serial_number
-        session_id = self._api.sessionid
         _LOGGER.debug("Setting thermostat temperature: %s", target_temp)
 
         try:
             if target_temp is not None:
                 await self._api.async_set_temperature(
-                    session_id, serial_number, target_temp
+                    self._api.sessionid, serial_number, target_temp
                 )
                 self._attr_hvac_mode = HVACMode.HEAT
         except (
