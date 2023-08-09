@@ -2,6 +2,7 @@
 [![ha-schluter](https://img.shields.io/github/v/release/IngoS11/ha-schluter.svg?1)](https://github.com/IngoS11/ha-schluter) ![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
 
 # About
+
 This is a work in progress alternative to the default [Schluter integration in Homeassistant](https://www.home-assistant.io/integrations/schluter/) and
 is currently in alpha stage. In comparison to the standard integration is using the [Integration Setup](https://my.home-assistant.io/redirect/integrations) and is written using the async Pyton libraries.
 
@@ -9,10 +10,9 @@ is currently in alpha stage. In comparison to the standard integration is using 
 
 ### Prerequisites
 
-- Use Home Assistant v2022.6.0 or above.
+- Use Home Assistant v2022.8.0 or above.
 - You need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. During the configuration of your Thermostat you will create a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
 - The integration will install into the `custom_components` folder.
-
 
 ### HACS Installation
 
