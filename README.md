@@ -10,13 +10,13 @@ is currently in alpha stage. In comparison to the standard integration is using 
 
 ### Prerequisites
 
-- Use Home Assistant v2022.8.0 or above.
+- Use Home Assistant v2022.7.0 or above.
 - You need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. During the configuration of your Thermostat you will create a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
 - The integration will install into the `custom_components` folder.
 
 ### HACS Installation
 
-This integration overwrites the standard Schluter integration and is therefore [not accepted into the default HACS repository](https://hacs.xyz/docs/publish/include). To use the integration with HACS you have to add this repository. Under HACS select Integrations in the overfolw menu (three dots in the upper right corner) select `Custom repositories` paste the URL, `https://github.com/IngoS11/ha-schluter`, into the `repository` field and select Integration as the Category.
+This integration overwrites the standard Schluter integration and is therefore [not accepted into the default HACS repository](https://hacs.xyz/docs/publish/include). To use the integration with HACS you have to add this repository. Under HACS select Integrations in the overflow menu (three dots in the upper right corner) select `Custom repositories` paste the URL, `https://github.com/IngoS11/ha-schluter`, into the `repository` field and select Integration as the Category.
 
 ### Manual Installation
 
@@ -60,3 +60,18 @@ ln -s ha-schluter/custom_components/schluter ~/.homeassistant/custom_components/
 - From the list, search and select “Schluter”.
 - Follow the instruction on screen to complete the set up.
 - After completing, the Schluter integration will be immediately available for use.
+
+### Development
+
+The development of the HA Schluter custom integration is based on the [dev container template](https://github.com/ludeeus/integration_blueprint)
+built by [Joakim Sorensen](https://github.com/ludeeus).
+
+### Known Issues
+
+The 2023.7.3 version of Homeassistant runs into an issue when starting up with the mobile app. Once the devcontainer is set up run
+
+```
+pip install git+https://github.com/boto/botocore
+```
+
+as described in https://github.com/home-assistant/core/issues/95192
