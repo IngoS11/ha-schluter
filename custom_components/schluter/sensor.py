@@ -214,8 +214,6 @@ class SchluterEnergySensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntit
         """Return the state of the sensor."""
         if self.coordinator.data[self._thermostat_id].is_heating:
             self.add(self.coordinator.data[self._thermostat_id].load_measured_watt)
-        else:
-            self.add(ZERO_WATTS)
         return round((sum(self._wattage_list) / self._values) / 1000, 2)
 
 
@@ -224,7 +222,7 @@ class SchluterEnergyPriceSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
 
     _attr_native_unit_of_measurement = "$/kWh"
     _attr_device_class = SensorDeviceClass.MONETARY
-    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_state_class = SensorStateClass.TOTAL
 
     def __init__(
         self,
