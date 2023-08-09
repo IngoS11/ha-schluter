@@ -10,7 +10,7 @@ is currently in alpha stage. In comparison to the standard integration is using 
 
 ### Prerequisites
 
-- Use Home Assistant v2022.7.0 or above.
+- Use Home Assistant v2023.7.0 or above.
 - You need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. During the configuration of your Thermostat you will create a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
 - The integration will install into the `custom_components` folder.
 
