@@ -1,19 +1,19 @@
 {
-  "version": "0.2.0",
   "domain": "schluter",
   "name": "Schluter DITRA-HEAT-E-Wifi",
+  "codeowners": [
+    "@IngoS11"
+  ],
   "config_flow": true,
+  "dependencies": [],
   "documentation": "https://github.com/Ingos11/ha-schluter",
+  "homekit": {},
+  "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Ingos11/ha-schluter/issues",
   "requirements": [
     "aioschluter==0.1.9"
   ],
   "ssdp": [],
-  "zeroconf": [],
-  "homekit": {},
-  "dependencies": [],
-  "codeowners": [
-    "@IngoS11"
-  ],
-  "iot_class": "cloud_polling"
+  "version": "0.2.0",
+  "zeroconf": []
 }
