@@ -8,63 +8,10 @@
       "problemMatcher": []
     },
     {
-      "label": "Flake8",
-      "type": "shell",
-      "command": "pre-commit run flake8 custom_components/schluter",
-      "group": {
-        "kind": "test"
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Pylint",
-      "type": "shell",
-      "command": "pylint --min-similarity-lines=7 custom_components/schluter",
-      "dependsOn": [
-        "Install all Requirements"
-      ],
-      "group": {
-        "kind": "test"
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "Install all Requirements",
       "type": "shell",
-      "command": "pip3 install --use-deprecated=legacy-resolver -r requirements.txt -r requirements_test.txt",
+      "command": "pip3 install --use-deprecated=legacy-resolver -r requirements.txt",
       "group": "test",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Isort",
-      "type": "shell",
-      "command": "isort --line-width 88 --trailing-comma -m 3 --profile black .",
-      "group": "test",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Pylint",
-      "type": "shell",
-      "command": "pylint custom_components tests",
-      "group": {
-        "kind": "test"
-      },
       "presentation": {
         "reveal": "always",
         "panel": "new"
@@ -74,7 +21,8 @@
     {
       "label": "Pytest",
       "type": "shell",
-      "command": "pytest",
+      "command": "pytest --timeout=10 tests",
+      "dependsOn": ["Install all Requirements"],
       "group": {
         "kind": "test",
       },
@@ -85,11 +33,12 @@
       "problemMatcher": []
     },
     {
-      "label": "Flake8",
+      "label": "Ruff",
       "type": "shell",
-      "command": "flake8 --max-line-length 88 .",
+      "command": "pre-commit run ruff check .",
       "group": {
-        "kind": "test"
+        "kind": "test",
+        "isDefault": true
       },
       "presentation": {
         "reveal": "always",
