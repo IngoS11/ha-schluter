@@ -19,10 +19,21 @@
       "problemMatcher": []
     },
     {
+      "label": "Install all Test Requirements",
+      "type": "shell",
+      "command": "pip3 install -r requirements.test.txt",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Pytest",
       "type": "shell",
       "command": "pytest --timeout=10 tests",
-      "dependsOn": ["Install all Requirements"],
+      "dependsOn": ["Install all Test Requirements"],
       "group": {
         "kind": "test",
       },
