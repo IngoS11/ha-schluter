@@ -1,6 +1,4 @@
 """Test config flow."""
-from unittest.mock import patch
-
 from homeassistant import config_entries, setup
 from custom_components.schluter.const import DOMAIN
 
