@@ -3,6 +3,5 @@ homeassistant==2023.8.1
 pip>=21.0,<23.2
 ruff==0.0.284
 
--r requirements.lint.txt
 -r requirements.test.txt
 
