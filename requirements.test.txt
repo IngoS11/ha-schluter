@@ -3,4 +3,5 @@ aiohttp_cors
 aioresponses
 pytest
 pytest-cov
+pre-commit
 pytest-homeassistant-custom-component
