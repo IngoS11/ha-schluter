@@ -2,14 +2,15 @@
 from __future__ import annotations
 
 import asyncio
-import logging
 from collections.abc import Mapping
+import logging
 from typing import Any
 
-import voluptuous as vol
 from aiohttp import ClientError
 from aiohttp.client_exceptions import ClientConnectorError
 from aioschluter import ApiError, InvalidUserPasswordError, SchluterApi
+import voluptuous as vol
+
 from homeassistant import config_entries
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.data_entry_flow import FlowResult
@@ -67,7 +68,18 @@ class SchluterConfigFlowHandler(
     async def async_step_reauth(self, entry_data: Mapping[str, Any]) -> FlowResult:
         """Handle re-auth if token invalid."""
         # pylint: disable=unused-argument
-        _LOGGER.debug("Not implemented yet")
+        _LOGGER.debug("!!! REAUTH Required fuer Schluter DIETRA Wifi Integration !!!")
+        self.reauth_entry = self.hass.config_entries.async_get_entry(
+            self.context["entry_id"]
+        )
+        return await self.async_step_reauth_confirm()
+
+    async def async_step_reauth_confirm(self, user_input=None):
+        """Perform re-auth upon an API authentication error."""
+        if user_input is None:
+            return self.async_show_form(
+                step_id="reauth_confirm", data_schema=vol.Schema({})
+            )
         return await self.async_step_user()
 
     async def async_try_connect(

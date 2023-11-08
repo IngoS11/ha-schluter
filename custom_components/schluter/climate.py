@@ -16,6 +16,7 @@ from aioschluter.const import (
     REGULATION_MODE_MANUAL,
     REGULATION_MODE_SCHEDULE,
 )
+
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
     ClimateEntityFeature,

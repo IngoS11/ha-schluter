@@ -1,12 +1,11 @@
 """The schluter integration."""
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+import logging
 from typing import Any
 
-import async_timeout
 from aiohttp.client_exceptions import ClientConnectorError
 from aioschluter import (
     ApiError,
@@ -14,6 +13,8 @@ from aioschluter import (
     InvalidUserPasswordError,
     SchluterApi,
 )
+import async_timeout
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import Config, HomeAssistant
@@ -71,7 +72,7 @@ async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
 
 
 class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
-    """Class to manage fetching Schluter temerature data from API."""
+    """Class to manage fetching Schluter temperature data from API."""
 
     def __init__(
         self,
@@ -101,10 +102,10 @@ class SchluterDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     self._sessionid = await self._api.async_get_sessionid(
                         self._username, self._password
                     )
-                # add 1 day to the session timestamp to be able to check agains
+                # add 1 day to the session timestamp to be able to check against
                 # the current time. if the time is expired renew the sessionid.
                 # This workaround mediates the missing long lived tokens on
-                # ths Schluter API side.
+                # this Schluter API side.
                 expiration_timestamp = self._api.sessionid_timestamp + timedelta(
                     days=+1
                 )

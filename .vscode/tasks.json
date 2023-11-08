@@ -46,7 +46,7 @@
     {
       "label": "Ruff",
       "type": "shell",
-      "command": "pre-commit run ruff check .",
+      "command": "ruff check .",
       "group": {
         "kind": "test",
         "isDefault": true
