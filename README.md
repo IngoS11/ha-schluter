@@ -3,8 +3,8 @@
 
 # About
 
-This is a work in progress alternative to the default [Schluter integration in Homeassistant](https://www.home-assistant.io/integrations/schluter/) and
-is currently in alpha stage. Over the standard integration it is making use of the [Integration Setup](https://my.home-assistant.io/redirect/integrations) and uses the async Python libraries.
+This Home Assistant integration is a work-in-progress alternative to the default [Schluter integration](https://www.home-assistant.io/integrations/schluter/) and
+is currently in alpha stage. Over the standard integration, it is making use of the [Integration Setup](https://my.home-assistant.io/redirect/integrations) and uses the async Python libraries. Like the [standard Schluter Integration](https://www.home-assistant.io/integrations/schluter/), this integration is currently also only supporting the [DIETRA HEAT E Wifi Thermostat](https://www.schluter.com/schluter-us/en_US/Floor-Warming/Schluter%AE-DITRA-HEAT-E-WiFi/p/product?productCode=DHERT104/BW) sold in North America. Schluter Thermostats sold in Europe seem to use a different cloud backend.
 
 ## Getting Started
 
