@@ -1,7 +1,7 @@
 colorlog==6.8.2
 homeassistant==2023.8.1
 pip>=23.0
-ruff==0.2.2
+ruff==0.4.2
 
 -r requirements.test.txt
 
