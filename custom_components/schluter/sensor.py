@@ -6,7 +6,7 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
-from homeassistant.const import ENERGY_KILO_WATT_HOUR, POWER_WATT, TEMP_CELSIUS
+from homeassistant.const import UnitOfTemperature, UnitOfEnergy, UnitOfPower
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
@@ -56,7 +56,7 @@ class SchluterTargetTemperatureSensor(
 ):
     """Representation of a Sensor."""
 
-    _attr_native_unit_of_measurement = TEMP_CELSIUS
+    _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
     _attr_device_class = SensorDeviceClass.TEMPERATURE
     _attr_state_class = SensorStateClass.MEASUREMENT
 
@@ -94,7 +94,7 @@ class SchluterTargetTemperatureSensor(
 class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
     """Representation of a Sensor."""
 
-    _attr_native_unit_of_measurement = TEMP_CELSIUS
+    _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
     _attr_device_class = SensorDeviceClass.TEMPERATURE
     _attr_state_class = SensorStateClass.MEASUREMENT
 
@@ -132,7 +132,7 @@ class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
 class SchluterPowerSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
     """Representation of a Sensor."""
 
-    _attr_native_unit_of_measurement = POWER_WATT
+    _attr_native_unit_of_measurement = UnitOfPower.WATT
     _attr_device_class = SensorDeviceClass.POWER
     _attr_state_class = SensorStateClass.MEASUREMENT
 
@@ -172,7 +172,7 @@ class SchluterPowerSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity
 class SchluterEnergySensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
     """Representation of a PowerSensor."""
 
-    _attr_native_unit_of_measurement = ENERGY_KILO_WATT_HOUR
+    _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.TOTAL
 
