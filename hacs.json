@@ -1,6 +1,6 @@
 {
     "name": "AIO Schluter DITRA-HEAT-E WIFI",
-    "homeassistant": "2023.7.0",
+    "homeassistant": "2024.5.3",
     "render_readme": true,
     "zip_release": true,
     "filename": "ha-schluter.zip"
