@@ -24,7 +24,8 @@ from homeassistant.components.climate.const import (
     HVACMode,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
+from homeassistant.const import ATTR_TEMPERATURE
+from homeassistant.components.climate.const import UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -116,7 +117,7 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
     @property
     def temperature_unit(self):
         """Schluter API always uses celsius."""
-        return TEMP_CELSIUS
+        return UnitOfTemperature.CELSIUS
 
     @property
     def current_temperature(self):
