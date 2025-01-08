@@ -36,6 +36,7 @@ async def async_setup(hass: HomeAssistant, config: Config):
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up schluter from a config entry."""
+
     username: str = entry.data[CONF_USERNAME]
     password: str = entry.data[CONF_PASSWORD]
 
@@ -51,13 +52,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = schluter_data
 
-    # Replacing the blocking call with a non-blocking alternative
-    await hass.async_add_executor_job(
-        hass.config_entries.async_forward_entry_setups,
-        entry,
-        PLATFORMS
-    )
-    
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
     entry.async_on_unload(entry.add_update_listener(update_listener))
 
     return True
