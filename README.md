@@ -4,7 +4,8 @@
 # About
 
 This Home Assistant integration is a work-in-progress alternative to the default [Schluter integration](https://www.home-assistant.io/integrations/schluter/) and
-is currently in alpha stage. Over the standard integration, it is making use of the [Integration Setup](https://my.home-assistant.io/redirect/integrations) and uses the async Python libraries. Like the [standard Schluter Integration](https://www.home-assistant.io/integrations/schluter/), this integration is currently also only supporting the [DIETRA HEAT E Wifi Thermostat](https://www.schluter.com/schluter-us/en_US/Floor-Warming/Schluter%AE-DITRA-HEAT-E-WiFi/p/product?productCode=DHERT104/BW) sold in North America. Schluter Thermostats sold in Europe seem to use a different cloud backend.
+is currently in the alpha stage. Over the standard integration, it makes use of the [Integration Setup](https://my.home-assistant.io/redirect/integrations) and uses the async Python libraries. Like the [standard Schluter Integration](https://www.home-assistant.io/integrations/schluter/), this integration is currently also only supporting the [DIETRA HEAT E Wifi Thermostat](https://www.schluter.com/schluter-us/en_US/Floor-Warming/Schluter%AE-DITRA-HEAT-E-WiFi/p/product?productCode=DHERT104/BW) sold in North America.
+Schluter Thermostats sold in Europe seem to use a different cloud backend and are not supported by this integration.
 
 ## Getting Started
 
@@ -16,7 +17,7 @@ is currently in alpha stage. Over the standard integration, it is making use of 
 
 ### HACS Installation
 
-This integration overwrites the standard Schluter integration and is therefore [not accepted into the default HACS repository](https://hacs.xyz/docs/publish/include). To use the integration with HACS you have to add this repository. Under HACS select Integrations in the overflow menu (three dots in the upper right corner) select `Custom repositories` paste the URL, `https://github.com/IngoS11/ha-schluter`, into the `repository` field and select Integration as the Category.
+This integration overwrites the standard Schluter integration and is, therefore [not accepted into the default HACS repository](https://hacs.xyz/docs/publish/include). To use the integration with HACS you have to add this repository. Under HACS select Integrations in the overflow menu (three dots in the upper right corner) select `Custom repositories` paste the URL, `https://github.com/IngoS11/ha-schluter`, into the `repository` field and select Integration as the Category.
 
 ### Manual Installation
 
@@ -67,11 +68,4 @@ The development of the HA Schluter custom integration is based on the [dev conta
 built by [Joakim Sorensen](https://github.com/ludeeus).
 
 ### Known Issues
-
-The 2023.7.3 version of Homeassistant runs into an issue when starting up with the mobile app. Once the devcontainer is set up run
-
-```
-pip install git+https://github.com/boto/botocore
-```
-
-as described in https://github.com/home-assistant/core/issues/95192
+- The Schluter API throws 500 errors at times that will result in the integration requiring a re-configuration
