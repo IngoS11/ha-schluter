@@ -1,5 +1,5 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-[![ha-schluter](https://img.shields.io/github/v/release/IngoS11/ha-schluter.svg?1)](https://github.com/IngoS11/ha-schluter) ![Maintenance](https://img.shields.io/maintenance/yes/2023.svg)
+[![ha-schluter](https://img.shields.io/github/v/release/IngoS11/ha-schluter.svg?1)](https://github.com/IngoS11/ha-schluter) ![Maintenance](https://img.shields.io/maintenance/yes/2025.svg)
 
 # About
 
