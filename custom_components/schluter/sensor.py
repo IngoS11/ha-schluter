@@ -174,7 +174,7 @@ class SchluterEnergySensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntit
 
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
     _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_state_class = SensorStateClass.TOTAL
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
 
     def __init__(
         self,
@@ -223,7 +223,7 @@ class SchluterEnergyPriceSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
 
     _attr_native_unit_of_measurement = "$/kWh"
     _attr_device_class = SensorDeviceClass.MONETARY
-    _attr_state_class = SensorStateClass.TOTAL
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
 
     def __init__(
         self,
