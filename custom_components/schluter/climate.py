@@ -30,13 +30,13 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
     DataUpdateCoordinator,
     UpdateFailed,
 )
 
 from . import SchluterData
 from .const import DOMAIN
+from .entity import SchluterEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -54,7 +54,7 @@ async def async_setup_entry(
     )
 
 
-class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity):
+class SchluterThermostat(SchluterEntity, ClimateEntity):
     """Define an Schluter Thermostat Entity."""
 
     _attr_hvac_modes = [HVACMode.HEAT, HVACMode.AUTO, HVACMode.OFF]
@@ -74,7 +74,7 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
         thermostat_id: str,
     ) -> None:
         """Initialize Schluter Thermostat."""
-        super().__init__(coordinator)
+        super().__init__(coordinator, thermostat_id)
         self._api = api
         self._name = coordinator.data[thermostat_id].name
         self._attr_unique_id = thermostat_id
@@ -150,13 +150,6 @@ class SchluterThermostat(CoordinatorEntity[DataUpdateCoordinator], ClimateEntity
     def max_temp(self):
         """Identify max_temp in Schluter API."""
         return self.coordinator.data[self._attr_unique_id].max_temp
-
-    # This property is important to let HA know if this entity is online or not.
-    # If an entity is offline (return False), the UI will refelect this.
-    @property
-    def available(self) -> bool:
-        """Return True if roller and hub is available."""
-        return self.coordinator.data[self._attr_unique_id].is_online
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Set the hvac mode"""
