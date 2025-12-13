@@ -72,11 +72,6 @@ class SchluterTargetTemperatureSensor(
         )
 
     @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
-
-    @property
     def device_info(self):
         """Return information to link this entity."""
         return {
@@ -110,11 +105,6 @@ class SchluterTemperatureSensor(SchluterEntity, SensorEntity):
         )
 
     @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
-
-    @property
     def device_info(self):
         """Return information to link this entity."""
         return {
@@ -146,11 +136,6 @@ class SchluterPowerSensor(SchluterEntity, SensorEntity):
         self._attr_unique_id = (
             f"{coordinator.data[thermostat_id].name}-{self._attr_device_class}"
         )
-
-    @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
 
     @property
     def device_info(self):
@@ -197,11 +182,6 @@ class SchluterEnergySensor(SchluterEntity, SensorEntity):
             self._wattage_list.pop()
 
     @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
-
-    @property
     def device_info(self):
         """Return information to link this entity."""
         return {
@@ -235,11 +215,6 @@ class SchluterEnergyPriceSensor(SchluterEntity, SensorEntity):
         self._attr_unique_id = (
             f"{coordinator.data[thermostat_id].name}-{self._attr_device_class}"
         )
-
-    @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
 
     @property
     def device_info(self):
