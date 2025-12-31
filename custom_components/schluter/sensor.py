@@ -7,13 +7,11 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import UnitOfTemperature, UnitOfEnergy, UnitOfPower
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-)
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from . import SchluterData
 from .const import DOMAIN, ZERO_WATTS
+from .entity import SchluterEntity
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -52,7 +50,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
 
 class SchluterTargetTemperatureSensor(
-    CoordinatorEntity[DataUpdateCoordinator], SensorEntity
+    SchluterEntity, SensorEntity
 ):
     """Representation of a Sensor."""
 
@@ -66,17 +64,12 @@ class SchluterTargetTemperatureSensor(
         thermostat_id: str,
     ) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator)
+        super().__init__(coordinator, thermostat_id)
         self._attr_name = coordinator.data[thermostat_id].name + " Target Temperature"
         self._thermostat_id = thermostat_id
         self._attr_unique_id = (
             f"{coordinator.data[thermostat_id].name}-target-{self._attr_device_class}"
         )
-
-    @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
 
     @property
     def device_info(self):
@@ -91,7 +84,7 @@ class SchluterTargetTemperatureSensor(
         return self.coordinator.data[self._thermostat_id].set_point_temp
 
 
-class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
+class SchluterTemperatureSensor(SchluterEntity, SensorEntity):
     """Representation of a Sensor."""
 
     _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
@@ -104,17 +97,12 @@ class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
         thermostat_id: str,
     ) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator)
+        super().__init__(coordinator, thermostat_id)
         self._attr_name = coordinator.data[thermostat_id].name + " Current Temperature"
         self._thermostat_id = thermostat_id
         self._attr_unique_id = (
             f"{coordinator.data[thermostat_id].name}-{self._attr_device_class}"
         )
-
-    @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
 
     @property
     def device_info(self):
@@ -129,7 +117,7 @@ class SchluterTemperatureSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
         return self.coordinator.data[self._thermostat_id].temperature
 
 
-class SchluterPowerSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
+class SchluterPowerSensor(SchluterEntity, SensorEntity):
     """Representation of a Sensor."""
 
     _attr_native_unit_of_measurement = UnitOfPower.WATT
@@ -142,17 +130,12 @@ class SchluterPowerSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity
         thermostat_id: str,
     ) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator)
+        super().__init__(coordinator, thermostat_id)
         self._attr_name = coordinator.data[thermostat_id].name + " Power"
         self._thermostat_id = thermostat_id
         self._attr_unique_id = (
             f"{coordinator.data[thermostat_id].name}-{self._attr_device_class}"
         )
-
-    @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
 
     @property
     def device_info(self):
@@ -169,7 +152,7 @@ class SchluterPowerSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity
         return ZERO_WATTS
 
 
-class SchluterEnergySensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
+class SchluterEnergySensor(SchluterEntity, SensorEntity):
     """Representation of a PowerSensor."""
 
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
@@ -183,7 +166,7 @@ class SchluterEnergySensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntit
         values=60,
     ) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator)
+        super().__init__(coordinator, thermostat_id)
         self._attr_name = coordinator.data[thermostat_id].name + " Energy"
         self._thermostat_id = thermostat_id
         self._attr_unique_id = (
@@ -197,11 +180,6 @@ class SchluterEnergySensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntit
         self._wattage_list.insert(0, watt)
         if len(self._wattage_list) == self._values:
             self._wattage_list.pop()
-
-    @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
 
     @property
     def device_info(self):
@@ -218,7 +196,7 @@ class SchluterEnergySensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntit
         return round((sum(self._wattage_list) / self._values) / 1000, 2)
 
 
-class SchluterEnergyPriceSensor(CoordinatorEntity[DataUpdateCoordinator], SensorEntity):
+class SchluterEnergyPriceSensor(SchluterEntity, SensorEntity):
     """Representation of a Sensor."""
 
     _attr_native_unit_of_measurement = "$/kWh"
@@ -231,17 +209,12 @@ class SchluterEnergyPriceSensor(CoordinatorEntity[DataUpdateCoordinator], Sensor
         thermostat_id: str,
     ) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator)
+        super().__init__(coordinator, thermostat_id)
         self._attr_name = coordinator.data[thermostat_id].name + " Price"
         self._thermostat_id = thermostat_id
         self._attr_unique_id = (
             f"{coordinator.data[thermostat_id].name}-{self._attr_device_class}"
         )
-
-    @property
-    def available(self) -> bool:
-        """Return True if Schluter thermostat is available."""
-        return self.coordinator.data[self._thermostat_id].is_online
 
     @property
     def device_info(self):
