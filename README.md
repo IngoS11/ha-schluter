@@ -68,4 +68,4 @@ The development of the HA Schluter custom integration is based on the [dev conta
 built by [Joakim Sorensen](https://github.com/ludeeus).
 
 ### Known Issues
-- The Schluter API throws 500 errors at times that will result in the integration requiring a re-configuration
+- Missing Ability to change password via Integrations View
