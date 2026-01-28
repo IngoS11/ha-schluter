@@ -1,7 +1,7 @@
 {
     "name": "ludeeus/integration_blueprint",
     "image": "mcr.microsoft.com/devcontainers/python:3.13",
-    "postCreateCommand": "scripts/setup",
+    "postCreateCommand": "scripts/setup && npm install -g @anthropic-ai/claude-code",
     "forwardPorts": [
         8123
     ],
@@ -37,7 +37,11 @@
         }
     },
     "remoteUser": "vscode",
+    "remoteEnv": {
+        "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+    },
     "features": {
+        "ghcr.io/devcontainers/features/node:1": {},
         "ghcr.io/devcontainers-extra/features/apt-packages:1": {
             "packages": "ffmpeg,libturbojpeg0,libpcap-dev"
         }
