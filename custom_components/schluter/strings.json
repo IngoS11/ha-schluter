@@ -11,7 +11,11 @@
       },
       "reauth_confirm": {
         "title": "[%key:common::config_flow::title::reauth%]",
-        "description": "Schluter-DITRA-HEAT-E-Wifi needs to reauthenticate your account"
+        "description": "Schluter-DITRA-HEAT-E-Wifi needs to reauthenticate your account",
+        "data": {
+          "username": "[%key:common::config_flow::data::username%]",
+          "password": "[%key:common::config_flow::data::password%]"
+        }
       }
     },
     "error": {
@@ -22,6 +26,19 @@
     "abort": {
       "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]",
       "reauth_successful": "[%key:common::config_flow::abort::reauth_successful%]"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Entity options",
+        "description": "Choose which optional entities to create",
+        "data": {
+          "enable_online_status_sensor": "Create online status binary sensor",
+          "enable_energy_sensor": "Create energy sensor",
+          "enable_heating_event": "Create heating event entity"
+        }
+      }
     }
   }
 }
