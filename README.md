@@ -12,6 +12,7 @@ It is an alternative to the built-in Schluter integration and uses async I/O thr
 - Device support: Schluter DITRA-HEAT-E-WiFi thermostats sold in North America
 - Backend: Schluter North America cloud backend
 - Not supported: thermostats sold in Europe that use a different cloud backend
+- New DITRA-HEAT-E-RS1 thermostats that use https://schluterditraheat.com/ as the backend
 
 ## Installation
 
