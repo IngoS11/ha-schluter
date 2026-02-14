@@ -1,5 +1,8 @@
-# Loads default set of integrations. Do not remove.
-default_config:
+# Loads default set of integrations except for the streaming that requires go2rtc. Do not remove.
+frontend:
+config:
+person:
+sun:
 
 # Load frontend themes from the themes folder
 frontend:
