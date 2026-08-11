@@ -201,7 +201,7 @@ class SchluterEnergyPriceSensor(SchluterEntity, SensorEntity):
 
     _attr_native_unit_of_measurement = "$/kWh"
     _attr_device_class = SensorDeviceClass.MONETARY
-    _attr_state_class = SensorStateClass.TOTAL_INCREASING
+    _attr_state_class = SensorStateClass.TOTAL
 
     def __init__(
         self,
