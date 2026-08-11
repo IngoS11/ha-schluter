@@ -1,71 +1,101 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 [![ha-schluter](https://img.shields.io/github/v/release/IngoS11/ha-schluter.svg?1)](https://github.com/IngoS11/ha-schluter) ![Maintenance](https://img.shields.io/maintenance/yes/2025.svg)
 
-# About
+# Schluter integration for Home Assistant
 
-This Home Assistant integration is a work-in-progress alternative to the default [Schluter integration](https://www.home-assistant.io/integrations/schluter/) and
-is currently in the alpha stage. Over the standard integration, it makes use of the [Integration Setup](https://my.home-assistant.io/redirect/integrations) and uses the async Python libraries. Like the [standard Schluter Integration](https://www.home-assistant.io/integrations/schluter/), this integration is currently also only supporting the [DIETRA HEAT E Wifi Thermostat](https://www.schluter.com/schluter-us/en_US/Floor-Warming/Schluter%AE-DITRA-HEAT-E-WiFi/p/product?productCode=DHERT104/BW) sold in North America.
-Schluter Thermostats sold in Europe seem to use a different cloud backend and are not supported by this integration.
+This custom integration connects Schluter DITRA-HEAT-E-WiFi thermostats to Home Assistant.
+It is an alternative to the built-in Schluter integration and uses async I/O through
+`aioschluter`.
 
-## Getting Started
+## Scope and compatibility
 
-### Prerequisites
+- Device support: Schluter DITRA-HEAT-E-WiFi thermostats sold in North America
+- Backend: Schluter North America cloud backend
+- Not supported: thermostats sold in Europe that use a different cloud backend
+- New DITRA-HEAT-E-RS1 thermostats that use https://schluterditraheat.com/ as the backend
 
-- Use Home Assistant v2023.7.0 or above.
-- You need at least one configured [Schluter®-DITRA-HEAT-E-WiFi Thermostat](https://www.schluter.com/schluter-us/en_US/ditra-heat-wifi) in your home. During the configuration of your Thermostat you will create a username and password at [https://ditra-heat-e-wifi.schluter.com/](https://ditra-heat-e-wifi.schluter.com/). This user and password need to be provided during the configuration in the [Integration Setup](#integration-setup) step.
-- The integration will install into the `custom_components` folder.
+## Installation
 
-### HACS Installation
+### HACS
 
-This integration overwrites the standard Schluter integration and is, therefore [not accepted into the default HACS repository](https://hacs.xyz/docs/publish/include). To use the integration with HACS you have to add this repository. Under HACS select Integrations in the overflow menu (three dots in the upper right corner) select `Custom repositories` paste the URL, `https://github.com/IngoS11/ha-schluter`, into the `repository` field and select Integration as the Category.
+This repository is a custom repository in HACS.
 
-### Manual Installation
+1. Open HACS.
+2. Go to Integrations.
+3. Open the menu in the top-right corner and select `Custom repositories`.
+4. Add `https://github.com/IngoS11/ha-schluter` with category `Integration`.
+5. Install the integration and restart Home Assistant.
 
-1. Open the directory with your Home Assistant configuration (where you find `configuration.yaml`,
-   usually `~/.homeassistant/`).
-2. If you do not have a `custom_components` directory there, you need to create it.
+### Manual
 
-#### Git clone method
+1. Copy `custom_components/schluter/` into your Home Assistant config directory under
+   `custom_components/`.
+2. Restart Home Assistant.
 
-This is a preferred method of manual installation, because it allows you to keep the `git` functionality,
-allowing you to manually install updates just by running `git pull origin main` from the created directory.
+## Setup
 
-Now you can clone the repository somewhere else and symlink it to Home Assistant like so:
+1. In Home Assistant, go to **Settings > Devices & Services**.
+2. Select **Add integration**.
+3. Search for `Schluter`.
+4. Enter your Schluter account username and password.
 
-1. Clone the repo.
+## Entities and features
 
-```shell
-git clone https://github.com/ingos11/ha-schluter.git schluter
-```
+### Climate
 
-2. Create the symlink to `schluter` in the configuration directory.
-   If you have non standard directory for configuration, use it instead.
+Each thermostat creates one climate entity with:
 
-```shell
-ln -s ha-schluter/custom_components/schluter ~/.homeassistant/custom_components/schluter
-```
+- HVAC modes: `heat`, `auto`, `off`
+- Target temperature support
+- Preset mode support:
+  - `manual`
+  - `schedule`
+  - `away`
+  - `none`
 
-#### Copy method
+### Sensors
 
-1. Download [ZIP](https://github.com/ingos11/ha-schluter/archive/main.zip) with the code.
-2. Unpack it.
-3. Copy the `custom_components/schluter/` from the unpacked archive to `custom_components`
-   in your Home Assistant configuration directory.
+Each thermostat creates these sensors:
 
-### Integration Setup
+- `Current Temperature` (`°C`)
+- `Target Temperature` (`°C`)
+- `Power` (`W`)
+- `Price` (`$/kWh`)
+- `Energy` (`kWh`, total increasing)
 
-- Browse to your Home Assistant instance.
-- In the sidebar click on [Configuration](https://my.home-assistant.io/redirect/config).
-- From the configuration menu select: [Integrations](https://my.home-assistant.io/redirect/integrations).
-- In the bottom right, click on the [Add Integration](https://my.home-assistant.io/redirect/config_flow_start?domain=schluter) button.
-- From the list, search and select “Schluter”.
-- Follow the instruction on screen to complete the set up.
-- After completing, the Schluter integration will be immediately available for use.
+Energy is calculated from elapsed time and measured wattage while heating, and is restored
+across Home Assistant restarts.
 
-### Development
+### Optional entities
 
-The development of the HA Schluter custom integration is based on the [dev container template](https://github.com/ludeeus/integration_blueprint)
-built by [Joakim Sorensen](https://github.com/ludeeus).
+You can enable or disable optional entities from the integration options:
 
-### Known Issues
-- Missing Ability to change password via Integrations View
+- Online status binary sensor (`binary_sensor`)
+- Energy sensor (`sensor`)
+- Heating event entity (`event`)
+
+Open **Settings > Devices & Services > Schluter > Configure** to change these options.
+
+### Heating transition events
+
+If the heating event entity is enabled, it emits event types when heating state changes:
+
+- `heating_started`
+- `heating_stopped`
+
+## Diagnostics
+
+The integration implements a diagnostics endpoint for support troubleshooting.
+Sensitive fields such as usernames, passwords, and session IDs are redacted.
+
+## Development
+
+Useful commands:
+
+- `ruff check custom_components/schluter tests/components/schluter`
+- `pytest -q tests/components/schluter -q`
+- `pytest -q tests -q`
+
+## Known issue
+
+- Changing credentials from the integration UI is not yet implemented.

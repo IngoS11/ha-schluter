@@ -5,3 +5,17 @@ set -e
 cd "$(dirname "$0")/.."
 
 python3 -m pip install --requirement requirements.txt
+
+BSHRC_FILE="/home/vscode/.bashrc"
+ALIAS_LINE="alias ciy='codex --dangerously-bypass-approvals-and-sandbox'"
+
+touch "$BSHRC_FILE"
+
+if grep -Fxq "$ALIAS_LINE" "$BSHRC_FILE"; then
+    echo "Alias already exists in $BSHRC_FILE: ciy"
+else
+    echo "$ALIAS_LINE" >> "$BSHRC_FILE"
+    echo "Added alias to $BSHRC_FILE: ciy"
+fi
+
+echo "Run 'source /home/vscode/.bashrc' (or open a new shell) to use the ciy alias."

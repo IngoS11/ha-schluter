@@ -1,21 +1,41 @@
 {
-    "config": {
-        "abort": {
-            "single_instance_allowed": "Only one instance of the integration is allowed"
-        },
-        "error": {
-            "cannot_connect": "Failed to connect",
-            "invalid_user_pass": "Invalid username or password",
-            "unknown": "Unexpected error"
-        },
-        "step": {
-            "user": {
-                "description": "Enter your credentials",
-                "data": {
-                    "password": "Password",
-                    "username": "Username"
-                }
-            }
+  "config": {
+    "abort": {
+      "single_instance_allowed": "Only one instance of the integration is allowed"
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_user_pass": "Invalid username or password",
+      "unknown": "Unexpected error"
+    },
+    "step": {
+      "reauth_confirm": {
+        "description": "Schluter-DITRA-HEAT-E-Wifi needs to reauthenticate your account",
+        "data": {
+          "password": "Password",
+          "username": "Username"
         }
+      },
+      "user": {
+        "description": "Enter your credentials",
+        "data": {
+          "password": "Password",
+          "username": "Username"
+        }
+      }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Choose which optional entities to create",
+        "data": {
+          "enable_energy_sensor": "Create energy sensor",
+          "enable_heating_event": "Create heating event entity",
+          "enable_online_status_sensor": "Create online status binary sensor"
+        },
+        "title": "Entity options"
+      }
+    }
+  }
 }
